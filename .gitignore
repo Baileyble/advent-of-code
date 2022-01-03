@@ -1,0 +1,4 @@
+# Project exclude paths
+/day-5/day-5.js
+/node_modules/
+/file-reader.js
