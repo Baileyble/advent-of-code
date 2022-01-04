@@ -11,15 +11,10 @@ function readFile(filePath: string, splitBy?: string) {
 const day25Input = readFile('./day-25/day-25-input', '\n');
 
 function parseInput(input: string[]): string[][] {
-
-    let twoDInput = input.filter(arrItem => !!arrItem).map((arrItem) => {
+    return input.filter(arrItem => !!arrItem).map((arrItem) => {
         const cleanR = arrItem.replace('\r', '');
         return cleanR.split('');
-    })
-
-    console.table(twoDInput);
-    return twoDInput;
-
+    });
 }
 
 function testDay25() {
@@ -29,31 +24,19 @@ function testDay25() {
 
     while (moves !== 0) {
         moves = theMovement(data);
-        console.log(moves)
         runs++
     }
 
     theMovement(data);
-
     console.table(data);
-
     return runs
 }
 
 function theMovement(data: string[][]): number {
-
-    console.table(data)
-
     const eastMovingCoord = getEastMovingCoord(data);
-
-    // console.log('eastMoving', eastMovingCoord);
-
     handleMovement(data, eastMovingCoord, 'east');
 
     const southMovingCoord = getSouthMovingCoord(data);
-
-    // console.log('southMoving', southMovingCoord);
-
     handleMovement(data, southMovingCoord, 'south');
 
     return eastMovingCoord.concat(...southMovingCoord).length;
@@ -108,16 +91,12 @@ function handleMovement(data: string[][], movingCoords: Array<{x: number, y: num
         return newCoords
     })
 
-    console.log(direction, newPositions);
-
     movingCoords.forEach(coord => {
         data[coord.y][coord.x] = '.';
-        console.log('.', coord, data[coord.y][coord.x]);
     })
 
     newPositions.forEach(coord => {
         data[coord.y][coord.x] = direction === 'east' ? '>' : 'v';
-        console.log(direction === 'east' ? '>' : 'v', coord, data[coord.y][coord.x]);
     })
 }
 
