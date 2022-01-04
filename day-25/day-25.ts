@@ -24,69 +24,39 @@ function parseInput(input: string[]): string[][] {
 
 function testDay25() {
     const data = parseInput(day25Input);
+    let moves;
+    let runs = 0;
 
-    let prev = data;
-    let curr = theMovement(data);
-    let runs = 0
-
-    while (prev !== curr) {
-      prev = curr;
-      curr = theMovement(prev);
-      console.table(curr)
-      runs++
+    while (moves !== 0) {
+        moves = theMovement(data);
+        console.log(moves)
+        runs++
     }
 
-    console.log(runs);
+    theMovement(data);
+
+    console.table(data);
+
     return runs
 }
 
-function theMovement(data: string[][]): string[][] {
+function theMovement(data: string[][]): number {
 
-    let cucumberMap = data;
+    console.table(data)
 
     const eastMovingCoord = getEastMovingCoord(data);
 
-    const newEastPositions = eastMovingCoord.map(coord => {
-        if (coord.x < data[0].length) {
-            coord.x = coord.x++
-        } else {
-            coord.x = 0
-        }
+    // console.log('eastMoving', eastMovingCoord);
 
-        return coord
-    })
-
-    eastMovingCoord.forEach(coord => {
-        cucumberMap[coord.y][coord.x] = '.';
-
-    })
-
-    newEastPositions.forEach(coord => {
-        cucumberMap[coord.y][coord.x] = '>';
-    })
-
+    handleMovement(data, eastMovingCoord, 'east');
 
     const southMovingCoord = getSouthMovingCoord(data);
 
-    const newSouthPositions = southMovingCoord.map(coord => {
-        if (coord.y < data.length) {
-            coord.y = coord.y++
-        } else {
-            coord.y = 0
-        }
+    // console.log('southMoving', southMovingCoord);
 
-        return coord
-    })
+    handleMovement(data, southMovingCoord, 'south');
 
-    southMovingCoord.forEach(coord => {
-        cucumberMap[coord.y][coord.x] = '.';
-    })
-
-    newSouthPositions.forEach(coord => {
-        cucumberMap[coord.y][coord.x] = 'v';
-    })
-
-    return cucumberMap
+    return eastMovingCoord.concat(...southMovingCoord).length;
 }
 
 function getEastMovingCoord(data: string[][]): Array<{x: number, y: number}> {
@@ -125,4 +95,30 @@ function getSouthMovingCoord(data: string[][]): Array<{x: number, y: number}> {
     }, [])
 }
 
-testDay25();
+function handleMovement(data: string[][], movingCoords: Array<{x: number, y: number}>, direction: 'east' | 'south') {
+    const newPositions = movingCoords.map(coord => {
+        const axis = direction === 'east' ? 'x' : 'y'
+        const axisLength = direction === 'south' ? data.length - 1 : data[0].length - 1;
+        const newCoords = Object.assign({}, coord);
+        if (newCoords[axis] < axisLength) {
+            newCoords[axis]++
+        } else {
+            newCoords[axis] = 0
+        }
+        return newCoords
+    })
+
+    console.log(direction, newPositions);
+
+    movingCoords.forEach(coord => {
+        data[coord.y][coord.x] = '.';
+        console.log('.', coord, data[coord.y][coord.x]);
+    })
+
+    newPositions.forEach(coord => {
+        data[coord.y][coord.x] = direction === 'east' ? '>' : 'v';
+        console.log(direction === 'east' ? '>' : 'v', coord, data[coord.y][coord.x]);
+    })
+}
+
+console.log(testDay25());
