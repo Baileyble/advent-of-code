@@ -1,12 +1,16 @@
-const fs = require("fs");
+// const fs = require("fs");
+//
+// function readFile(filePath: string, splitBy?: string) {
+//     if (splitBy) {
+//         return fs.readFileSync(filePath, 'utf8').split(splitBy);
+//     } else {
+//         return fs.readFileSync(filePath, 'utf8');
+//     }
+// }
 
-function readFile(filePath: string, splitBy?: string) {
-    if (splitBy) {
-        return fs.readFileSync(filePath, 'utf8').split(splitBy);
-    } else {
-        return fs.readFileSync(filePath, 'utf8');
-    }
-}
+// import {readFile} from 'fs';
+
+import {readFile} from '../file-reader';
 
 const day25Input = readFile('./day-25/day-25-input', '\n');
 
